@@ -3,10 +3,8 @@
 @section('title', 'Home')
 
 @section('content')
-<div>
-    <form action="">
-        <input type="text" placeholder="Enter title book">
-        <button type="submit">SEARCH</button>
-    </form>
-</div>
+<form action="" type="POST">
+    <input type="text" placeholder="Enter title book">
+    <button type="submit">SEARCH</button>
+</form>
 @endsection
