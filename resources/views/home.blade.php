@@ -1,10 +1,7 @@
-<!doctype html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>Home</title>
-    </head>
-    <body>
-        <h3>Home page</h3>
-    </body>
-</html>
+@extends('layouts.master')
+
+@section('title', 'Home')
+
+@section('content')
+<h3>Home page</h3>
+@endsection
