@@ -3,5 +3,10 @@
 @section('title', 'Home')
 
 @section('content')
-<h3>Home page</h3>
+<div>
+    <form action="">
+        <input type="text" placeholder="Enter title book">
+        <button type="submit">SEARCH</button>
+    </form>
+</div>
 @endsection

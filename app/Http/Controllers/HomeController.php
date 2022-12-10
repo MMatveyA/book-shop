@@ -9,9 +9,19 @@ class HomeController extends Controller
     /*
      * Домашняя страница
      *
-     * @return void
+     * @return view
      */
     public function home ()
+    {
+        return view('home');
+    }
+
+    /*
+     * Поиск книги
+     *
+     * @return view
+     */
+    public function search (Request $request)
     {
         return view('home');
     }

@@ -14,5 +14,5 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Route::get('/', [HomeController::class, 'home'])
-    ->name('home');
+Route::get('/', [HomeController::class, 'home'])->name('home');
+Route::post('/', [HomeController::class, 'search']);
