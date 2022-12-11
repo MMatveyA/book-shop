@@ -3,14 +3,21 @@
 @section('title', 'Searching results')
 
 @section('content')
+<table border="1">
     @if ($authors != NULL)
+        <tr>
+            <th>Имя фамилия отчество</th>
+            <th>Дата рождения</th>
+            <th>Дата смерти</th>
+            <th>Краткая биография</th>
+        </tr>
         @forelse ($authors as $author)
-            <div>
-                <h2>{{ $author->second_name }} {{ $author->first_name }} {{ $author->thrid_name }}</h2>
-                <p>{{ $author->birth }}</p>
-                <p>{{ $author->death }}</p>
-                <p>{{ $author->biography }}</p>
-            </div>
+            <tr bordercolor="#000">
+                <td>{{ $author->second_name }} {{ $author->first_name }} {{ $author->thrid_name }}</td>
+                <td>{{ $author->birth }}</td>
+                <td>{{ $author->death }}</td>
+                <td>{{ $author->biography }}</td>
+            </tr>
         @empty
         @endforelse
     @elseif ($books != NULL)
@@ -28,4 +35,5 @@
     @else
         <p>Not found</p>
     @endif
+</table>
 @endsection
