@@ -22,4 +22,9 @@ class Author extends Model
         'death',
         'biography'
     ];
+
+    public function books () 
+    {
+        return $this->hasMany(Book::class);
+    }
 }

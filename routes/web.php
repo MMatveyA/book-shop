@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +16,7 @@ use App\Http\Controllers\HomeController;
 */
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
-Route::post('/', [HomeController::class, 'search']);
+Route::post('/', [SearchController::class, 'search']);
+
+Route::get('advanced_search', [SearchController::class, 'adv_search'])->name('adv_search');
+Route::post('advanced_search', [SearchController::class, 'adv_search']);
