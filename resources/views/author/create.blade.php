@@ -4,6 +4,7 @@
 
 @section('content')
     <form action="{{ route('author.store') }}" method="POST">
+        @csrf
         <input type="text" name="first_name" placeholder="name" required><br>
         <input type="text" name="second_name" placeholder="second_name" required><br>
         <input type="text" name="thrid_name" placeholder="thrid_name"><br>

@@ -20,4 +20,5 @@
     <b>Об авторе:</b><br>
     {{ $author->biography }}<br>
     </p>
+    <h5><a href="{{ route('author.edit', ['author' => $author->id]) }}">Редактировать</a></h5>
 @endsection

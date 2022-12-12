@@ -37,7 +37,16 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $author = Author::create([
+            'first_name' => $request->input('first_name'),
+            'second_name' => $request->input('second_name'),
+            'thrid_name' => $request->input('thrid_name'),
+            'birth' => $request->input('birth'),
+            'death' => $request->input('death'),
+            'biography' => $request->input('biography'),
+        ]);
+
+        return redirect()->route('home');
     }
 
     /**
@@ -46,10 +55,10 @@ class AuthorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($author)
+    public function show($id)
     {
         return view('author.author', [
-            'author' => Author::findOrFail($author)
+            'author' => Author::findOrFail($id)
         ]);
     }
 
@@ -61,7 +70,9 @@ class AuthorController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('author.edit', [
+            'author' => Author::findOrFail($id),
+        ]);
     }
 
     /**
