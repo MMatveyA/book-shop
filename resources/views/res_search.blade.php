@@ -5,31 +5,25 @@
 @section('content')
 <table border="1">
     @if ($authors != NULL)
-        <tr>
-            <th>Имя фамилия отчество</th>
-            <th>Дата рождения</th>
-            <th>Дата смерти</th>
-            <th>Краткая биография</th>
-        </tr>
-        @forelse ($authors as $author)
-            <tr bordercolor="#000">
-                <td>{{ $author->second_name }} {{ $author->first_name }} {{ $author->thrid_name }}</td>
-                <td>{{ $author->birth }}</td>
-                <td>{{ $author->death }}</td>
-                <td>{{ $author->biography }}</td>
-            </tr>
-        @empty
-        @endforelse
+        @include('layouts.authors')
     @elseif ($books != NULL)
+        <tr>
+            <th>Название</th>
+            <th>Дата публикации</th>
+            <th>Оценка</th>
+            <th>Краткое описание</th>
+            <th>Цена</th>
+            <th>Автор</th>
+        </tr>
         @forelse ($books as $book)
-            <div>
-                <h2>{{ $book->title }}</h2>
-                <p>{{ $book->published }}</p>
-                <p>{{ $book->rating }}</p>
-                <p>{{ $book->introduction }}</p>
-                <p>{{ $book->price }}</p>
-                <p>{{ $book->author->second_name }}</p>
-            </div>
+            <tr>
+                <td>{{ $book->title }}</td>
+                <td>{{ $book->published }}</td>
+                <td>{{ $book->rating }}</td>
+                <td>{{ $book->introduction }}</td>
+                <td>{{ $book->price }}</td>
+                <td>{{ $book->author->second_name }}</td>
+            </tr>
         @empty
         @endforelse
     @else

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\AuthorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,5 @@ Route::post('/', [SearchController::class, 'search']);
 
 Route::get('advanced_search', [SearchController::class, 'adv_search'])->name('adv_search');
 Route::post('advanced_search', [SearchController::class, 'adv_search']);
+
+Route::resource('/author', AuthorController::class);
