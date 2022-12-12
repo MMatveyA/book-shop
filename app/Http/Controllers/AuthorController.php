@@ -84,7 +84,18 @@ class AuthorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $author = Author::find($id);
+
+        $author->first_name = $request->input('first_name');
+        $author->second_name = $request->input('second_name');
+        $author->thrid_name = $request->input('thrid_name');
+        $author->birth = $request->input('birth');
+        $author->death = $request->input('death');
+        $author->biography = $request->input('biography');
+
+        $author->save();
+
+        return redirect()->route('home');
     }
 
     /**
