@@ -39,23 +39,35 @@ class AuthorController extends Controller
     {
         $data = $request->all();
 
-        if ($data['image'] != NULL)
+        $source = $data['image'];
+        if ($source)
         {
-            $filename = $data['image']->getClientOriginalName();
-            
-            $data['image'] -> move(Storage::path('/public/image/authors/').'origin/', $filename);
-            
-            $thumbnail = Image::make(Storage::path('/public/image/authors/').'origin/', $filename);
-            $thumbnail->fir(200, 200);
-            $thumbnail->save(Storage::path('/public/image/authors').'origin/', $filename);
-
-            $data['image'] = $filenaem;
+            $ext = str_replace('jpeg', 'jpg', $source->extension());
+            // Уникальное имя файла
+            $name = md5(uniqid());
+            Storage::putFileAs('public/image/source/author', $source, $name.'.'.$ext);
+            $data['source'] = Storage::url('public/image/source/author/'.$name.'.jpg');
+            // Изображение для страницы автора с размером 1200х800б качество 100%
+            $image = Image::make($source)
+                ->fit(400, 400)
+                ->encode('jpg', 100);
+            Storage::put('public/image/image/author/'.$name.'.jpg', $image);
+            $image->destroy();
+            $data['image'] = Storage::url('public/image/image/author/'.$name.'.jpg');
+            // Изображение для страницы со списком авторов
+            $thumb = Image::make($source)
+                ->fit(200, 200)
+                ->encode('jpg', 100);
+            Storage::put('public/image/thumb/author/'.$name.'.jpg', $thumb);
+            $thumb->destroy();
+            $data['thumb'] = Storage::url('public/image/thumb/author/'.$name.'.jpg');
         }
+
 
 
         Author::create($data);
 
-        return redirect()->route('authors.index');
+        return redirect()->route('author.index');
     }
 
     /**
@@ -106,6 +118,8 @@ class AuthorController extends Controller
         $source = $data['image'];
         if ($source)
         {
+            Storage::delete([$author->source, $author->image, $author->thumb]);
+
             $ext = str_replace('jpeg', 'jpg', $source->extension());
             // Уникальное имя файла
             $name = md5(uniqid());

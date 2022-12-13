@@ -21,6 +21,7 @@ class Author extends Model
         'birth',
         'death',
         'biography',
+        'source',
         'image',
         'thumb',
     ];

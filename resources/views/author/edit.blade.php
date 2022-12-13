@@ -33,7 +33,7 @@
         </div>
         <div class="form-group mb-3">
             <label for="image" class="form-label">Фотография</label>
-            <input class="form-control" type="file" id="image" name="image" src="{{ $author->image }}"><br>
+            <input class="form-control" type="file" id="image" name="image" src="{{ $author->image }}" accept="image/*"><br>
         </div>
         <div class="mb-3">
             <input type="reset" class="btn btn-danger" value="Сбросить">
