@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
-use App\Models\Author;
 
-class AuthorController extends Controller
+use App\Models\Author;
+use App\Models\Book;
+
+class BookController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,11 +18,8 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        return view('author.index', [
-            'authors' => Author::orderBy('second_name')
-                ->orderBy('first_name')
-                ->orderBy('thrid_name')
-                ->get(),
+        return view('book.index', [
+            'books' => Book::all(),
         ]);
     }
 
@@ -31,7 +30,9 @@ class AuthorController extends Controller
      */
     public function create()
     {
-        return view('author.create');
+        return view('book.create', [
+            'authors' => Author::all(),
+        ]);
     }
 
     /**
@@ -68,11 +69,9 @@ class AuthorController extends Controller
             $data['thumb'] = Storage::url('public/image/thumb/author/'.$name.'.jpg');
         }
 
+        Book::create($data);
 
-
-        Author::create($data);
-
-        return redirect()->route('author.index');
+        return redirect()->route('book.index');
     }
 
     /**
@@ -83,8 +82,8 @@ class AuthorController extends Controller
      */
     public function show($id)
     {
-        return view('author.show', [
-            'author' => Author::findOrFail($id)
+        return view('book.show', [
+            'book' => Book::find($id),
         ]);
     }
 
@@ -96,8 +95,9 @@ class AuthorController extends Controller
      */
     public function edit($id)
     {
-        return view('author.edit', [
-            'author' => Author::findOrFail($id),
+        return view('book.edit', [
+            'authors' => Author::All(),
+            'book' => Book::findOrFail($id),
         ]);
     }
 
@@ -110,44 +110,45 @@ class AuthorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $author = Author::find($id);
+        $book = Book::find($id);
 
         $data = $request->all();
 
-        $author->first_name = $data['first_name'];
-        $author->second_name = $data['second_name'];
-        $author->thrid_name = $data['thrid_name'];
-        $author->birth = $data['birth'];
-        $author->death = $data['death'];
-        $author->biography = $data['biography'];
+        $book->title = $data['title'];
+        $book->published = $data['published'];
+        $book->introduction = $data['introduction'];
+        $book->price = $data['price'];
+        $book->author_id = $data['author_id'];
         $source = $data['image'] ?? NULL;
         if ($source)
         {
-            Storage::delete([$author->source, $author->image, $author->thumb]);
+            Storage::delete([$book->source, $book->image, $book->thumb]);
 
             $ext = str_replace('jpeg', 'jpg', $source->extension());
             // Уникальное имя файла
             $name = md5(uniqid());
-            Storage::putFileAs('public/image/source/author', $source, $name.'.'.$ext);
+            Storage::putFileAs('public/image/source/book', $source, $name.'.'.$ext);
             // Изображение для страницы автора с размером 1200х800б качество 100%
             $image = Image::make($source)
                 ->fit(400, 400)
                 ->encode('jpg', 100);
-            Storage::put('public/image/image/author/'.$name.'.jpg', $image);
+            Storage::put('public/image/image/book/'.$name.'.jpg', $image);
             $image->destroy();
-            $author->image = Storage::url('public/image/image/author/'.$name.'.jpg');
+            $book->source = Storage::url('public/image/source/book/'.$name.'.jpg');
+            $book->image = Storage::url('public/image/image/book/'.$name.'.jpg');
             // Изображение для страницы со списком авторов
             $thumb = Image::make($source)
                 ->fit(200, 200)
                 ->encode('jpg', 100);
-            Storage::put('public/image/thumb/author/'.$name.'.jpg', $thumb);
+            Storage::put('public/image/thumb/book/'.$name.'.jpg', $thumb);
             $thumb->destroy();
-            $author->thumb = Storage::url('public/image/thumb/author/'.$name.'.jpg');
+            $book->thumb = Storage::url('public/image/thumb/book/'.$name.'.jpg');
         }
 
-        $author->save();
+        $book->save();
 
-        return redirect()->route('author.index');
+        return redirect()->route('book.index');
+        
     }
 
     /**
@@ -158,8 +159,8 @@ class AuthorController extends Controller
      */
     public function destroy($id)
     {
-        Author::destroy($id);
+        Book::destroy($id);
 
-        return redirect()->route('author.index');
+        return redirect()->route('book.index');
     }
 }

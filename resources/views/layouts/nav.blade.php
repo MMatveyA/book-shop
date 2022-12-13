@@ -6,7 +6,9 @@
                 <li><a href="{{ route('home') }}" class="nav-link px-2 link-secondary">Главная</a></li>
                 <li><a href="{{ route('adv_search') }}" class="nav-link px-2 link-dark">Расширенный поиск</a></li>
                 <li><a href="{{ route('author.index') }}" class="nav-link px-2 link-dark">Авторы</a></li>
+                <li><a href="{{ route('book.index') }}" class="nav-link px-2 link-dark">Книги</a></li>
                 <li><a href="{{ route('author.create') }}" class="nav-link px-2 link-dark">Добавить автора</a></li>
+                <li><a href="{{ route('book.create') }}" class="nav-link px-2 link-dark">Добавить книгу</a></li>
             </ul>
         
             <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" method="POST" action="/">
