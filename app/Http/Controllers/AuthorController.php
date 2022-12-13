@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 use App\Models\Author;
 
 class AuthorController extends Controller
@@ -14,9 +16,7 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $authors = Author::all();
-
-        return view('author.index', ['authors' => $authors,]);
+        return view('author.index', ['authors' => Author::all()]);
     }
 
     /**
@@ -37,16 +37,25 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        $author = Author::create([
-            'first_name' => $request->input('first_name'),
-            'second_name' => $request->input('second_name'),
-            'thrid_name' => $request->input('thrid_name'),
-            'birth' => $request->input('birth'),
-            'death' => $request->input('death'),
-            'biography' => $request->input('biography'),
-        ]);
+        $data = $request->all();
 
-        return redirect()->route('home');
+        if ($data['image'] != NULL)
+        {
+            $filename = $data['image']->getClientOriginalName();
+            
+            $data['image'] -> move(Storage::path('/public/image/authors/').'origin/', $filename);
+            
+            $thumbnail = Image::make(Storage::path('/public/image/authors/').'origin/', $filename);
+            $thumbnail->fir(200, 200);
+            $thumbnail->save(Storage::path('/public/image/authors').'origin/', $filename);
+
+            $data['image'] = $filenaem;
+        }
+
+
+        Author::create($data);
+
+        return redirect()->route('authors.index');
     }
 
     /**
@@ -86,16 +95,40 @@ class AuthorController extends Controller
     {
         $author = Author::find($id);
 
-        $author->first_name = $request->input('first_name');
-        $author->second_name = $request->input('second_name');
-        $author->thrid_name = $request->input('thrid_name');
-        $author->birth = $request->input('birth');
-        $author->death = $request->input('death');
-        $author->biography = $request->input('biography');
+        $data = $request->all();
+
+        $author->first_name = $data['first_name'];
+        $author->second_name = $data['second_name'];
+        $author->thrid_name = $data['thrid_name'];
+        $author->birth = $data['birth'];
+        $author->death = $data['death'];
+        $author->biography = $data['biography'];
+        $source = $data['image'];
+        if ($source)
+        {
+            $ext = str_replace('jpeg', 'jpg', $source->extension());
+            // Уникальное имя файла
+            $name = md5(uniqid());
+            Storage::putFileAs('public/image/source/author', $source, $name.'.'.$ext);
+            // Изображение для страницы автора с размером 1200х800б качество 100%
+            $image = Image::make($source)
+                ->fit(400, 400)
+                ->encode('jpg', 100);
+            Storage::put('public/image/image/author/'.$name.'.jpg', $image);
+            $image->destroy();
+            $author->image = Storage::url('public/image/image/author/'.$name.'.jpg');
+            // Изображение для страницы со списком авторов
+            $thumb = Image::make($source)
+                ->fit(200, 200)
+                ->encode('jpg', 100);
+            Storage::put('public/image/thumb/author/'.$name.'.jpg', $thumb);
+            $thumb->destroy();
+            $author->thumb = Storage::url('public/image/thumb/author/'.$name.'.jpg');
+        }
 
         $author->save();
 
-        return redirect()->route('home');
+        return redirect()->route('author.index');
     }
 
     /**

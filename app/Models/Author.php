@@ -20,7 +20,9 @@ class Author extends Model
         'thrid_name',
         'birth',
         'death',
-        'biography'
+        'biography',
+        'image',
+        'thumb',
     ];
 
     public function books () 

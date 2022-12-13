@@ -1,15 +1,14 @@
-<tr>
-    <th>Имя фамилия отчество</th>
-    <th>Дата рождения</th>
-    <th>Дата смерти</th>
-    <th>Краткая биография</th>
-</tr>
-@foreach ($authors as $author)
-    <tr>
-        <td>{{ $author->second_name }} {{ $author->first_name }} {{ $author->thrid_name }}</td>
-        <td>{{ $author->birth }}</td>
-        <td>{{ $author->death }}</td>
-        <td>{{ $author->biography }}</td>
-        <td><a href="{{ route('author.show', ['author' => $author->id]) }}">Подробнее</a></td>
-    </tr>
-@endforeach
+    <div class="row">
+        @foreach ($authors as $author)
+            <div class="col-lg-3 col-sm-6">
+                <div class="card text-center border-primary" style="width: 18rem">
+                    <img class="card-image-top" src="{{ $author->thumb != '' ? $author->thumb : asset('storage/image/thumb/not_image.jpg') }}" alt="{{ $author->second_name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $author->second_name }}</h5>
+                        <h6 class="card-subtitle mb-2 text-mutted">{{ $author->first_name }} {{ $author->thrid_name }}</h6>
+                        <a href="{{ route('author.show', ['author' => $author->id]) }}" class="btn btn-primary">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
