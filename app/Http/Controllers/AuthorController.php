@@ -16,7 +16,12 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        return view('author.index', ['authors' => Author::all()]);
+        return view('author.index', [
+            'authors' => Author::orderBy('second_name')
+                ->orderBy('first_name')
+                ->orderBy('thrid_name')
+                ->get(),
+        ]);
     }
 
     /**
@@ -153,6 +158,8 @@ class AuthorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Author::destroy($id);
+
+        return redirect()->route('author.index');
     }
 }

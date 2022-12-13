@@ -25,7 +25,12 @@
             <b>Об авторе:</b><br>
             {{ $author->biography }}<br>
             </p>
-            <h5><a href="{{ route('author.edit', ['author' => $author->id]) }}">Редактировать</a></h5>
+            <form action="{{ route('author.destroy', ['author' => $author->id]) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <a href="{{ route('author.edit', ['author' => $author->id]) }}" class="btn btn-primary">Редактировать</a>
+                <button type="submit" class="btn btn-danger">Удалить</button>
+            </form>
         </div>
     </div>
 @endsection
